@@ -8,8 +8,8 @@ from tqdm import tqdm
 
 
 # Загрузка предварительно обученной модели E5 и токенизатора
-model = AutoModel.from_pretrained("./multilingual-e5-base")
-tokenizer = AutoTokenizer.from_pretrained("./multilingual-e5-base")
+model = AutoModel.from_pretrained("./models/multilingual-e5-base")
+tokenizer = AutoTokenizer.from_pretrained("./models/multilingual-e5-base")
 
 # Функция для токенизации данных
 def tokenize_function(examples):
@@ -27,7 +27,7 @@ def load_finetune_dataset(file_path):
     return Dataset.from_list(data)
 
 # Путь к подготовленному датасету
-dataset_file = 'finetune_dataset.json'
+dataset_file = 'Data/finetune_dataset.json'
 dataset = load_finetune_dataset(dataset_file)
 
 # Токенизация данных
@@ -41,7 +41,7 @@ def collate_fn(batch):
     return {'input_ids': input_ids, 'attention_mask': attention_mask}
 
 
-train_dataloader = DataLoader(tokenized_dataset, batch_size=8, shuffle=True, collate_fn=collate_fn)
+train_dataloader = DataLoader(tokenized_dataset, batch_size=1, shuffle=True, collate_fn=collate_fn)
 
 # Определение функции потерь на основе косинусного сходства
 cosine_similarity = nn.CosineSimilarity(dim=1)
@@ -103,6 +103,6 @@ model.to(device)
 train(model, train_dataloader, optimizer)
 
 # Сохранение модели
-model.save_pretrained("./e5_finetuned")
-tokenizer.save_pretrained("./e5_finetuned")
+model.save_pretrained("./models/e5_finetuned")
+tokenizer.save_pretrained("./models/e5_finetuned")
 

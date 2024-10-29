@@ -1,6 +1,9 @@
 /data
 /doc
-/__pycache__
+__pycache__
 /server_env
 /sharedforvm
+/data_
+/Data
+/models
 
