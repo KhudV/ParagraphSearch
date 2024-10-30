@@ -59,7 +59,14 @@ def processIndex(request: IndexRequest) -> ProcessedIndexRequest:
     )
 
 def processSearch(request: SearchRequest) -> ProcessedSearchRequest:
-    pass
+    vector = generate_embeddings(request.text, model, tokenizer)
+    return ProcessedSearchRequest(
+        content   = request.text,
+        vector    = vector.tolist(),
+        top_k     = request.top_k,
+        filter_by = request.filter_by,
+        keywords  = request.keywords
+    )
 
 
 

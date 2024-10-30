@@ -1,11 +1,11 @@
 # Server is aimed to process user requests and send them to the DataBase
 
 from interface import SearchAnswer, IndexRequest, SearchRequest
-# from dataBase import DBLoadVector, DBSearchVector
+from dataBase import dbIndex, dbSearch
 from exceptions import BadRequest, InternalError
 from processing import processIndex, processSearch
 from fastapi import FastAPI, Body
-
+import traceback
 
 
 app = FastAPI()
@@ -15,11 +15,19 @@ async def search(request: SearchRequest) -> SearchAnswer:
     '''search in DataBase with given json'''
 
     try:
-        print(request.__dict__)
-        # return DBSearchVector(request)
-
-    except BadRequest | InternalError as e:
-        return {'error': e}
+        # print(request.__dict__)
+        request = processSearch(request)
+        request = dbSearch(request)
+        return request
+    # except BadRequest | InternalError as e:
+    except Exception as e:
+        print(e)
+        print(traceback.format_exc())
+        return SearchAnswer(
+            success = False,
+            content = [],
+            count = 0
+        )
 
 
 @app.post('/index')
@@ -31,7 +39,9 @@ async def index(request: IndexRequest):
         # request = indexingRequestToClass(request)
         request = processIndex(request)
         print(len(request.vector))
-        # DBLoadVector(request)
+        dbIndex(request)
         return {'status': 'ok'}
-    except BadRequest | InternalError as e:
-        return {'error': e}
+    except Exception as e:
+        print(e)
+        print(traceback.format_exc())
+        return {'status': 'error'}

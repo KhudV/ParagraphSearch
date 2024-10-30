@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Dict
 
 
 # search
@@ -24,6 +24,7 @@ class ProcessedSearchRequest(BaseModel):
 class SearchAnswer(BaseModel):
     '''Search message: DataBase -> WEB-server'''
 
+    success   : bool
     content   : List[str]
     count     : int
 
@@ -34,7 +35,7 @@ class IndexRequest(BaseModel):
 
     content   : str
     queries   : List[str]  = []
-    keywords  : List[str]  = []
+    keywords  : List[Dict[str, str]]  = []
     chunk_id  : str | None = None
 
 
