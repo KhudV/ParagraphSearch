@@ -34,8 +34,8 @@ class IndexRequest(BaseModel):
     '''Index message: WEB-server -> DataBase'''
 
     content   : str
-    queries   : List[str]  = []
-    keywords  : List[Dict[str, str]]  = []
+    queries   : List[str] | None = []
+    keywords  : List[Dict[str, str | None]]  = []
     chunk_id  : str | None = None
 
 

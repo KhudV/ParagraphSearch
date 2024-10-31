@@ -3,26 +3,27 @@
 from interface import SearchRequest, ProcessedSearchRequest, SearchAnswer
 from interface import IndexRequest, ProcessedIndexRequest, IndexAnswer
 from dataBase import dbIndex, dbSearch
-from exceptions import BadRequest, InternalError
 from processing import processIndex, processSearch
-from fastapi import FastAPI, Body
+from fastapi import FastAPI
+from simpleLogger import log, logact, logerr
 import traceback
 
 
 
 app = FastAPI()
 
-@app.post('/search')
+@app.post('/searching')
 async def search(request: SearchRequest) -> SearchAnswer:
     '''search in DataBase with given json'''
 
     try:
+        logact('Search request:', request)
         request = processSearch(request)
         request = dbSearch(request)
+        logact('Get answer from DB:', request)
         return request
-    # except BadRequest | InternalError as e:
     except Exception as e:
-        print(traceback.format_exc())
+        logerr(traceback.format_exc())
         return SearchAnswer(
             success = False,
             content = [],
@@ -30,33 +31,19 @@ async def search(request: SearchRequest) -> SearchAnswer:
         )
 
 
-@app.post('/index')
+@app.post('/indexing')
 async def index(request: IndexRequest) -> IndexAnswer:
     '''Loads given json to DataBase'''
 
     try:
-        print(request.__dict__)
+        logact('Index request:', request)
         request = processIndex(request)
         dbIndex(request)
-        return {'status': 'ok'}
+        return IndexAnswer(
+            success = True
+        )
     except Exception as e:
-        print(traceback.format_exc())
-        return {'status': 'error'}
-    
-# @app.post('/load_dataset')
-# async def index(request: IndexRequest):
-#     '''Loads given json to DataBase'''
-
-#     try:
-#         print(request.__dict__)
-#         # request = indexingRequestToClass(request)
-#         request = processIndex(request)
-#         # print(len(request.vector))
-#         # print(request.vector)
-#         dbIndex(request)
-#         return {'status': 'ok'}
-#     except Exception as e:
-#         print(e)
-#         print(traceback.format_exc())
-#         return {'status': 'error'}
-    
+        logerr(traceback.format_exc())
+        return IndexAnswer(
+            success = False
+        )

@@ -1,7 +1,7 @@
 version: "v2.29.7"
 services:
   server:
-    image: server_img4
+    image: server_img14
     ports:
       - '5000:8000'
   qdrant:

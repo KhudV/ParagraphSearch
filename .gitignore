@@ -2,9 +2,7 @@
 /doc
 __pycache__
 /server_env
-/sharedforvm
 /data_
 /Data
 /models
 /train_model
-

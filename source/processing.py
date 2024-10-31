@@ -43,7 +43,18 @@ def generate_embeddings(text: str, model: torch.nn.Module, tokenizer: AutoTokeni
 
 # Функция для преобразования объектов от запроса на поиск
 def processIndex(request: IndexRequest) -> ProcessedIndexRequest:
-    vector = generate_embeddings(request.content, model, tokenizer)
+
+    queries = '' if request.queries is None else ' '.join(request.queries)
+    keywords = ''
+    for keyword in request.keywords:
+        if keyword['keyword_or_phrase'] is not None and \
+                                keyword['explanation'] is not None:
+            keywords += keyword['keyword_or_phrase'] + \
+                                                    keyword['explanation']
+
+    text = request.content + keywords + queries
+    vector = generate_embeddings(text, model, tokenizer)
+
     return ProcessedIndexRequest(
         content  = request.content,
         vector   = vector.tolist(),
@@ -62,6 +73,3 @@ def processSearch(request: SearchRequest) -> ProcessedSearchRequest:
         filter_by = request.filter_by,
         keywords  = request.keywords
     )
-
-
-

@@ -8,6 +8,8 @@ from counter import counter
 qdrant = QdrantClient(":memory:")
 # qdrant = QdrantClient(url='http://localhost:6333')
 
+
+# Creating DataBase collection
 try:
     qdrant.create_collection(
         collection_name="DataBase",
@@ -21,6 +23,8 @@ except:
 
 
 def dbSearch(request: ProcessedSearchRequest) -> SearchAnswer:
+    '''Searchs vector in qdrant'''
+
     hits = qdrant.query_points(
         collection_name="DataBase",
         query=request.vector,
@@ -33,21 +37,19 @@ def dbSearch(request: ProcessedSearchRequest) -> SearchAnswer:
         count   = 0
     )
 
-    print('printing hints')
     for hit in hits:
-        print(hit.payload, "score:", hit.score)
-        ret.content.append(hit)
+        ret.content.append(hit.payload['content'])
         ret.count += 1
 
     return ret
 
 
 def dbIndex(request: ProcessedIndexRequest) -> IndexAnswer:
+    '''Loads vector and it's payload into qdrant'''
     
     qdrant.upload_points(
         collection_name="DataBase",
         points=[
-            # models.PointStruct(id=1, vector=[0, 0, 0, 0, 0, 0, 0], payload={'data': '1'*7}),
             models.PointStruct(
                 id      = counter(),
                 vector  = request.vector,
