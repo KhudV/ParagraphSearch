@@ -35,7 +35,7 @@ class IndexRequest(BaseModel):
 
     content   : str
     queries   : List[str] | None = []
-    keywords  : List[Dict[str, str | None]]  = []
+    keywords_or_phrases  : List[Dict[str, str | None]]  = []
     chunk_id  : str | None = None
 
 
@@ -44,8 +44,8 @@ class ProcessedIndexRequest(BaseModel):
 
     vector    : List[float]
     content   : str
-    queries   : List[str]  = []
-    keywords  : List[str]  = []
+    queries   : List[str] | None = []
+    keywords  : List[Dict[str, str | None]]  = []
     chunk_id  : str | None = None
 
 

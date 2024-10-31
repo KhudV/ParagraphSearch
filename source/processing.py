@@ -46,7 +46,7 @@ def processIndex(request: IndexRequest) -> ProcessedIndexRequest:
 
     queries = '' if request.queries is None else ' '.join(request.queries)
     keywords = ''
-    for keyword in request.keywords:
+    for keyword in request.keywords_or_phrases:
         if keyword['keyword_or_phrase'] is not None and \
                                 keyword['explanation'] is not None:
             keywords += keyword['keyword_or_phrase'] + \
@@ -59,7 +59,7 @@ def processIndex(request: IndexRequest) -> ProcessedIndexRequest:
         content  = request.content,
         vector   = vector.tolist(),
         queries  = request.queries,
-        keywords = request.keywords,
+        keywords = request.keywords_or_phrases,
         chunk_id = request.chunk_id
     )
 
