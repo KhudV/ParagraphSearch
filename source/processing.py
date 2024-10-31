@@ -7,8 +7,9 @@ from interface import IndexRequest, ProcessedIndexRequest
 
 
 # Загрузка модели и токенизатора
-model = AutoModel.from_pretrained("../models/multilingual-e5-base")
-tokenizer = AutoTokenizer.from_pretrained("../models/multilingual-e5-base")
+model = AutoModel.from_pretrained("./models/multilingual-e5-base")
+tokenizer = AutoTokenizer.from_pretrained("./models/multilingual-e5-base")
+
 
 # Функция для генерации эмбеддингов
 def generate_embeddings(text: str, model: torch.nn.Module, tokenizer: AutoTokenizer) -> np.ndarray:
@@ -40,14 +41,7 @@ def generate_embeddings(text: str, model: torch.nn.Module, tokenizer: AutoTokeni
     return embeddings
 
 
-# Функция для преобразования объектов от запроса на индексацию
-# def convertIndex(request_sp: IndexRequest, model, tokenizer) -> ProcessedIndexRequest:
-#     # Генерация эмбеддинга для content
-    
-
-
 # Функция для преобразования объектов от запроса на поиск
-
 def processIndex(request: IndexRequest) -> ProcessedIndexRequest:
     vector = generate_embeddings(request.content, model, tokenizer)
     return ProcessedIndexRequest(
@@ -58,6 +52,7 @@ def processIndex(request: IndexRequest) -> ProcessedIndexRequest:
         chunk_id = request.chunk_id
     )
 
+# Функция для преобразования объектов от запроса на индексацию
 def processSearch(request: SearchRequest) -> ProcessedSearchRequest:
     vector = generate_embeddings(request.text, model, tokenizer)
     return ProcessedSearchRequest(
