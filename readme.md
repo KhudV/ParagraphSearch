@@ -21,8 +21,9 @@ Server run on *'localhost:5000'*.
 
 *POST /searching*
 
+JSON:
 ```json
-JSON {
+{
     "text"      : "text",
     "top_k"     : 3,
     "filter_by" : "filter_by",
@@ -31,6 +32,8 @@ JSON {
     ]
 }
 ```
+
+Python:
 ```python
 class SearchRequest(BaseModel):
     text      : str
@@ -40,8 +43,10 @@ class SearchRequest(BaseModel):
 ```
 
 *POST /indexing*
+
+JSON:
 ```json
-JSON {
+{
     "content": "content",
     "queries": [
         "queries"
@@ -59,6 +64,8 @@ JSON {
     "chunk_id": "chunk_id"
 }
 ```
+
+Python:
 ```python
 class IndexRequest(BaseModel):
     content   : str
@@ -81,7 +88,7 @@ services:
    ports:
     - '5000:8000'
    qdrant:
-	 image: qdrant/qdrant
+     image: qdrant/qdrant
      ports:
       - '6333:6333'
 ```
