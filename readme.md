@@ -87,10 +87,10 @@ services:
   image: largenumberofones/paragraph_search
    ports:
     - '5000:8000'
-   qdrant:
-     image: qdrant/qdrant
-     ports:
-      - '6333:6333'
+  qdrant:
+   image: qdrant/qdrant
+   ports:
+    - '6333:6333'
 ```
 
 
