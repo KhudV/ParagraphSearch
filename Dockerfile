@@ -7,9 +7,6 @@ COPY models /usr/src/app/models
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
-RUN pip install colorama
-
-# COPY scripts /usr/src/app/scripts
 COPY source /usr/src/app/source
 
 EXPOSE 8000
