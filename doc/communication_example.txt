@@ -1,0 +1,35 @@
+// Search request example [POST /searching]
+{
+    "text"      : "piece of wood",
+    "top_k"     : int = 2,
+    "filter_by" : null,
+    "keywords"  : ["wood"]
+}
+// Search answer example
+{
+    "success"   : true,
+    "content"   : [
+        "How it happened that Mastro Cherry, carpenter, found a piece of wood that wept and laughed like a child.",
+        "The piece of wood lay on the forest floor, half-buried in the leaves, its surface rough and weathered. It had been shaped by years of rain and sun, telling a story of resilience and endurance. As the light filtered through the trees, it caught the grains of the wood, revealing intricate patterns that whispered of the life it once had as part of a mighty oak."
+    ],
+    "count"     : 2
+}
+
+
+
+// Index request example [POST /indexing]
+{
+    "content"   : "How it happened that Mastro Cherry, carpenter, found a piece of wood that wept and laughed like a child.",
+    "queries"   : [],
+    "keywords"  : [
+        {
+            "keyword_or_phrase": "Mastro Cherry",
+            "explanation": "Mastro Ciliegia is the main antagonist of Pinocchio and Friends"
+        }
+    ],
+    "chunk_id"  : "e60b46b6-849b-5527-bb13-88e58c2bb2f9"
+}
+// Index answer example
+{
+    "success": true
+}

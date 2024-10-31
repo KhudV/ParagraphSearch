@@ -1,0 +1,4 @@
+ 
+Server     - proccesing user requests
+DataBase   - stroring and searching through results
+Processing - Converting text and it's atributes to storing format(vector)
